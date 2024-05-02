@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+     name: security-istio-demo-virtual-service
+     namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - security-istio-demo-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /demo
+      route:
+       - destination:
+          host: security-istio-demo
+          port:
+           number: 8080
+      corsPolicy:
+        allowOrigins:
+          - exact: "*"
+        allowMethods:
+          - POST
+          - GET
+          - PUT
+          - DELETE
+          - OPTIONS
+        allowCredentials: true
+        allowHeaders:
+          - Content-Type
+          - Authorization
+        maxAge: "24h"

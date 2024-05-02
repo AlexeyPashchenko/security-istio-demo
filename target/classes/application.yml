@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: security-istio-demo
+
+server:
+  servlet:
+    context-path: /demo

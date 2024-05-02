@@ -1,0 +1,46 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: security-istio-demo-request-auth
+  namespace: default
+spec:
+  action: ALLOW
+  rules:
+  #Swagger (Удалить этот блок на проде!)
+    - from:
+        - source:
+            principals: [ "*" ]
+      to:
+        - operation:
+            methods: [ "GET", "POST" ]
+            paths: [ "/demo/swagger-ui/*",
+                     "*/v3/api-docs/swagger-config",
+                     "*/v3/api-docs" ]
+  #Сервис security-istio-demo.
+    - from:
+        - source:
+            principals: ["*"]
+      to:
+        - operation:
+            methods: [ "GET" ]
+            paths: [ "/demo/public" ]
+    - from:
+        - source:
+            principals: [ "*" ]
+      to:
+        - operation:
+            methods: [ "GET" ]
+            paths: [ "/demo/private" ]
+      when:
+        - key: request.auth.claims[realm_access][roles]
+          values: [ "ROLE_USER", "ROLE_ADMIN" ]
+    - from:
+        - source:
+            principals: [ "*" ]
+      to:
+        - operation:
+            methods: [ "GET" ]
+            paths: [ "/demo/private-admin" ]
+      when:
+        - key: request.auth.claims[realm_access][roles]
+          values: [ "ROLE_ADMIN" ]
