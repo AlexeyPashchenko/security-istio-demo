@@ -21,7 +21,17 @@
 
 2. Устанавливаем Istio:
    ```
-   $   istioctl install --set profile=demo -y
+   $   kubectl create namespace istio-system
+   ```
+   ```
+   $   helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -
+   ```
+   ```
+   $   kubectl -n istio-system wait --for=condition=complete job --all
+   ```
+   ```
+   $   helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
+    --values install/kubernetes/helm/istio/values-istio-demo.yaml | kubectl apply -f -
    ```
    ```
    $   minikube addons enable istio
@@ -106,8 +116,12 @@
 
    Важно чтобы jwksUri в securityIstioDemoApplicationRequestAuthentication.yaml был внутренний для кластера ip этого же кейклока!
 
+   Образы тестового приложения:
+   https://hub.docker.com/repository/docker/234423/security-istio-demo/tags
    Список литературы:
    https://www.infracloud.io/blogs/request-level-authentication-authorization-istio-keycloak/
+   Документация: 
+   https://istio.io/v1.5/docs/
 
 
 
