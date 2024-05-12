@@ -7,37 +7,30 @@
    ```
    $   minikube start --driver=docker --cpus 4 --memory 17g --force-systemd=true --addons=ingress --addons=ingress-dns
    ```
-   ```
-   $   minikube addons enable ingress
-   ```
-   ```
-   $   minikube addons enable ingress-dns
-   ```
 
    *Для проверки статуса можно выполнить:
    ```
    $   minikube status
    ```
+*  Установка istioctl:
+   1.1. Скачиваем актуальную версию:
+   ``` 
+   $   curl -sL https://istio.io/downloadIstioctl | sh -
+   ```
+   1.2. Добавляем istioctl в path, на macOS или Linux:
+   ``` 
+   $   export PATH=$HOME/.istioctl/bin:$PATH
+   ``` 
 
 2. Устанавливаем Istio:
    ```
-   $   kubectl create namespace istio-system
-   ```
-   ```
-   $   helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -
-   ```
-   ```
-   $   kubectl -n istio-system wait --for=condition=complete job --all
-   ```
-   ```
-   $   helm template install/kubernetes/helm/istio --name istio --namespace istio-system \
-    --values install/kubernetes/helm/istio/values-istio-demo.yaml | kubectl apply -f -
+   $   istioctl install --set profile=demo -y
    ```
    ```
    $   minikube addons enable istio
    ```
-* Для доступа к локальному кластеру буду использовать инструмент Lens
-  2.1. Проверяем в Lens наличие istio неймспейса и istio подов
+*  Для доступа к локальному кластеру буду использовать инструмент Lens
+   2.1. Проверяем в Lens наличие istio неймспейса и istio подов
 
 3. Устанавливаем keycloak через helm
    ```
@@ -118,8 +111,13 @@
 
    Образы тестового приложения:
    https://hub.docker.com/repository/docker/234423/security-istio-demo/tags
+
+   Установка istioctl:
+   https://istio.io/latest/docs/ops/diagnostic-tools/istioctl/
+
    Список литературы:
    https://www.infracloud.io/blogs/request-level-authentication-authorization-istio-keycloak/
+   
    Документация: 
    https://istio.io/v1.5/docs/
 
