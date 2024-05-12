@@ -43,9 +43,10 @@
  - создаём реалм istio
  - создаём клиент "OpenID Connect" (название istio. остальное по умолчанию, главное выбрать тип клиента "OpenID Connect")
  - добавляем роли "ROLE_USER" и "ROLE_ADMIN".
- - создаем пользователей test-user и test-admin
+ - создаем пользователей test-user и test-admin с паролями
    (пароли не временные + email + Email verified + имя + фамилия, иначе есть риск получить ошибку {"error":"invalid_grant","error_description":"Account is not fully set up"}!)
  - назначаем пользователям соответствующие роли
+ - обновляем файл securityIstioDemoApplicationRequestAuthentication.yaml (папка istio-conf) указав в jwksUri внутренний ip-адрес пода Keycloak (смотрим его в Lens)
 
 5*. Это необязательный шаг, нужен если вы решили использовать своё приложение, а не использовать образ с моим приложением
 *Как сбилдить и запушить образ в docker hub?
