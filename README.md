@@ -46,7 +46,11 @@
  - создаем пользователей test-user и test-admin с паролями
    (пароли не временные + email + Email verified + имя + фамилия, иначе есть риск получить ошибку {"error":"invalid_grant","error_description":"Account is not fully set up"}!)
  - назначаем пользователям соответствующие роли
- - обновляем файл securityIstioDemoApplicationRequestAuthentication.yaml (папка istio-conf) указав в jwksUri внутренний ip-адрес пода Keycloak (смотрим его в Lens)
+
+Важно! 
+ По умолчанию НЕ НУЖНО обновлять jwksUri в файле securityIstioDemoApplicationRequestAuthentication.yaml!
+ Но если получили ошибку "Jwks doesn't have key to match kid or alg from Jwt", то в поле jwksUri 
+ указываем внутренний ip пода Кейклока, например: "http://10.244.0.35:8080/realms/istio/protocol/openid-connect/certs"
 
 5*. Это необязательный шаг, нужен если вы решили использовать своё приложение, а не использовать образ с моим приложением
 *Как сбилдить и запушить образ в docker hub?
@@ -106,10 +110,9 @@
    ```
    $  curl -X GET http://localhost:4041/demo/private -H "Authorization: Bearer ****"
    ```
-  получаем ответ: "Закрытый API метод, требующий аутентификации под пользователем с ролью ROLE_USER, ROLE_ADMIN!"
+   получаем ответ: "Закрытый API метод, требующий аутентификации под пользователем с ролью ROLE_USER, ROLE_ADMIN!"
 
-   Важно чтобы jwksUri в securityIstioDemoApplicationRequestAuthentication.yaml был внутренний для кластера ip этого же кейклока!
-
+   
    Образы тестового приложения:
    https://hub.docker.com/repository/docker/234423/security-istio-demo/tags
 

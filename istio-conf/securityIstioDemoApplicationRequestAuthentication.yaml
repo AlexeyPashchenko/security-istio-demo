@@ -9,5 +9,5 @@ spec:
      app: security-istio-demo
   jwtRules:
   - issuer: "http://localhost:4040/realms/istio"
-    jwksUri: "http://10.244.0.35:8080/realms/istio/protocol/openid-connect/certs"
+    jwksUri: "http://my-release-keycloak-headless.default:8080/realms/istio/protocol/openid-connect/certs"
     forwardOriginalToken: true
